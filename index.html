@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLR 37 - Moto-Volta Athens 2026</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars"></div>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1 class="title">KLR 37</h1>
+            <p class="subtitle">Celebrating 37 Years of Adventure</p>
+            <p class="tagline">Moto-Volta Athens 2026</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="event-details">
+            <div class="container">
+                <h2>The Ride</h2>
+                <div class="details-grid">
+                    <div class="detail-card">
+                        <div class="detail-icon">📅</div>
+                        <h3>When</h3>
+                        <p>November 7, 2026</p>
+                        <p class="small">08:00 AM - 06:00 PM</p>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-icon">📍</div>
+                        <h3>Where</h3>
+                        <p>Athens Area</p>
+                        <p class="small">Starting point TBA</p>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-icon">🏍️</div>
+                        <h3>Route</h3>
+                        <p>Moto-Volta Loop</p>
+                        <p class="small">~200 km scenic route</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about">
+            <div class="container">
+                <h2>About This Adventure</h2>
+                <p>The Kawasaki KLR650 has been an icon of adventure riding since 1987. After 37 years of proven reliability and countless journeys, we're gathering the moto community around Athens to celebrate this legendary bike.</p>
+                <p>Join us for the <strong>Moto-Volta</strong> – a scenic loop through the Athens region where KLR owners and adventure riders unite to share the road, stories, and the spirit of exploration.</p>
+            </div>
+        </section>
+
+        <section class="rsvp-section">
+            <div class="container">
+                <h2>Are You In?</h2>
+                <p class="section-subtitle">Tell us you're coming and what you're riding</p>
+
+                <form id="rsvpForm" class="rsvp-form">
+                    <div class="form-group">
+                        <label for="name">Your Name *</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            required
+                            placeholder="Enter your name"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            required
+                            placeholder="your@email.com"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="motorcycle">Motorcycle Type *</label>
+                        <select id="motorcycle" name="motorcycle" required>
+                            <option value="">-- Select your bike --</option>
+                            <option value="klr650">Kawasaki KLR650</option>
+                            <option value="klr250">Kawasaki KLR250</option>
+                            <option value="dual-sport">Dual Sport</option>
+                            <option value="adventure">Adventure Bike</option>
+                            <option value="cruiser">Cruiser</option>
+                            <option value="sport">Sport Bike</option>
+                            <option value="naked">Naked Bike</option>
+                            <option value="classic">Classic/Retro</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="motorcycleModel">Bike Model / Year</label>
+                        <input
+                            type="text"
+                            id="motorcycleModel"
+                            name="motorcycleModel"
+                            placeholder="e.g., KLR650 1998 Green"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="attendance">Will You Join Us? *</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="attendance" value="yes" required> Yes, I'm riding!
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="attendance" value="maybe"> Maybe, depends
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="attendance" value="no"> Not this time
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message (optional)</label>
+                        <textarea
+                            id="message"
+                            name="message"
+                            rows="3"
+                            placeholder="Tell us about your KLR memories or riding story..."
+                        ></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit">RSVP Now</button>
+                </form>
+
+                <div id="successMessage" class="success-message" style="display: none;">
+                    <p>🎉 Thanks for your RSVP! See you on the road!</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="riders">
+            <div class="container">
+                <h2>Who's Coming</h2>
+                <div id="ridersList" class="riders-list">
+                    <!-- Riders will be listed here -->
+                </div>
+                <p class="riders-count" id="ridersCount">Be the first to RSVP!</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 KLR 37 - Moto-Volta Athens. Keep the rubber side down.</p>
+            <p class="social">Follow the journey: #KLR37 #MotoVolta #AthensRiders</p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
