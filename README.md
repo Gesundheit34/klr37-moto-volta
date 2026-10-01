@@ -1,12 +1,12 @@
-# KLR 37 - Moto-Volta Athens 2026
+# KLR 36 - Moto-Volta Athens 2026
 
-🏍️ **Celebrate 37 years of Kawasaki KLR adventure with the Athens moto community!**
+🏍️ **Celebrate 36 years of Kawasaki KLR adventure with the Athens moto community!**
 
 ## Event Overview
 
-**KLR 37** is a special celebration of the legendary Kawasaki KLR650, which has been a pillar of adventure riding since 1987. We're organizing a scenic **Moto-Volta** (circular motorcycle ride) around Athens in November 2026, bringing together KLR owners and adventure riders from across Greece.
+**KLR 36** is a special celebration of the legendary Kawasaki KLR650, which has been a pillar of adventure riding since 1987. We're organizing a scenic **Moto-Volta** (circular motorcycle ride) around Athens in November 2026, bringing together KLR owners and adventure riders from across Greece.
 
-- **Date**: November 7, 2026
+- **Date**: November 1, 2026
 - **Route**: ~200 km scenic loop around Athens
 - **Duration**: 08:00 AM - 06:00 PM
 - **Location**: Athens, Greece
@@ -26,7 +26,7 @@ This is a simple, self-contained event website built with vanilla HTML, CSS, and
 ## Project Structure
 
 ```
-klr37-moto-volta/
+klr36-moto-volta/
 ├── index.html      # Main event page
 ├── style.css       # Styling and responsive design
 ├── script.js       # Form handling and data management
@@ -62,7 +62,7 @@ Each RSVP entry contains:
 1. Push this repository to GitHub
 2. Go to **Settings → Pages**
 3. Select **Deploy from a branch** → main branch
-4. Your site will be live at `https://yourusername.github.io/klr37-moto-volta/`
+4. Your site will be live at `https://yourusername.github.io/klr36-moto-volta/`
 
 ### Option 2: Netlify (Drag & Drop)
 1. Go to [netlify.com](https://www.netlify.com)
@@ -77,7 +77,7 @@ Each RSVP entry contains:
 ### Option 4: Self-Hosted
 Simply upload all files to your web server via FTP/SSH:
 ```bash
-scp -r ./klr37-moto-volta/ user@yourserver.com:/var/www/html/
+scp -r ./klr36-moto-volta/ user@yourserver.com:/var/www/html/
 ```
 
 ## Local Development
@@ -95,7 +95,7 @@ python -m SimpleHTTPServer 8000
 http-server
 
 # Using Python's built-in server
-cd klr37-moto-volta
+cd klr36-moto-volta
 python -m http.server
 ```
 
@@ -105,7 +105,7 @@ Then open `http://localhost:8000` in your browser.
 
 ### Change Event Details
 Edit `index.html` and update:
-- Event date: `<p>November 7, 2026</p>`
+- Event date: `<p>November 1, 2026</p>`
 - Event location: `<p>Athens Area</p>`
 - Route info: `<p>~200 km scenic route</p>`
 
@@ -154,7 +154,7 @@ To export RSVP data:
 2. Go to Console
 3. Run:
 ```javascript
-console.log(JSON.stringify(JSON.parse(localStorage.getItem('klr37Riders')), null, 2));
+console.log(JSON.stringify(JSON.parse(localStorage.getItem('klr36Riders')), null, 2));
 ```
 4. Copy the output and save to a JSON file
 5. Import into Excel/Google Sheets if needed
@@ -195,7 +195,7 @@ console.log(JSON.stringify(JSON.parse(localStorage.getItem('klr37Riders')), null
 For questions about the event or website:
 - 📧 **Email**: [your-email@example.com]
 - 📱 **WhatsApp Group**: [Link to group]
-- 🏍️ **Hashtags**: #KLR37 #MotoVolta #AthensRiders
+- 🏍️ **Hashtags**: #KLR36 #MotoVolta #AthensRiders
 
 ## License
 
@@ -209,4 +209,4 @@ Built with ❤️ for the adventure riding community.
 
 **Keep the rubber side down and see you on the road! 🏍️**
 
-*KLR 37 - Moto-Volta Athens 2026*
+*KLR 36 - Moto-Volta Athens 2026*
