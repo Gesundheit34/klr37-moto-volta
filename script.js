@@ -14,13 +14,13 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     };
 
     // Get existing riders from localStorage
-    let riders = JSON.parse(localStorage.getItem('klr37Riders')) || [];
+    let riders = JSON.parse(localStorage.getItem('klr36Riders')) || [];
 
     // Add new rider
     riders.push(formData);
 
     // Save to localStorage
-    localStorage.setItem('klr37Riders', JSON.stringify(riders));
+    localStorage.setItem('klr36Riders', JSON.stringify(riders));
 
     // Show success message
     document.getElementById('rsvpForm').style.display = 'none';
@@ -39,7 +39,7 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
 
 // Display riders
 function displayRiders() {
-    const riders = JSON.parse(localStorage.getItem('klr37Riders')) || [];
+    const riders = JSON.parse(localStorage.getItem('klr36Riders')) || [];
     const ridersList = document.getElementById('ridersList');
     const ridersCount = document.getElementById('ridersCount');
 
