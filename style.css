@@ -234,6 +234,14 @@ h2::after {
     font-weight: 400;
 }
 
+.ride-note {
+    max-width: 700px;
+    margin: 40px auto 0;
+    text-align: center;
+    font-size: 1.25rem;
+    color: var(--text);
+}
+
 /* About Section */
 .about {
     line-height: 1.8;
