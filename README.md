@@ -105,8 +105,9 @@ Then open `http://localhost:8000` in your browser.
 ### Change Event Details
 Edit `index.html` and update:
 - Event date: `<p>Sunday 1 November</p>`
-- Event location: `<p>Athens Area</p>`
-- Route info: `<p>~200 km scenic route</p>`
+- Starting point: the Where card links to Θέατρο Βράχων on Google Maps
+- Route stops: the `<li data-lat data-lng>` list in the Route section (`route.js` draws them on the map and fetches the road distance from OSRM)
+- Google Maps route: the `btn-maps` link
 
 ### Modify Colors
 Edit `style.css` variables:
