@@ -79,3 +79,17 @@ window.addEventListener('DOMContentLoaded', displayRiders);
 
 // Auto-update riders list every 5 seconds
 setInterval(displayRiders, 5000);
+
+// Side stripes: feed the scroll position to CSS, which slides each stripe at its own speed
+(function () {
+    const root = document.documentElement;
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+            root.style.setProperty('--scroll', window.scrollY);
+            ticking = false;
+        });
+    }, { passive: true });
+})();
