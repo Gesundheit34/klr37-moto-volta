@@ -42,73 +42,6 @@ html, body {
     z-index: -1;
 }
 
-/* Side stripes: three racing stripes in each empty side gutter, sliding with scroll */
-.side-stripes {
-    position: fixed;
-    top: -10vh;
-    bottom: -10vh;
-    width: calc((100vw - 1100px) / 2);
-    display: none;
-    justify-content: center;
-    gap: 14px;
-    pointer-events: none;
-    z-index: 3;
-    transform: skewX(-5deg);
-}
-
-.side-left {
-    left: 0;
-}
-
-.side-right {
-    right: 0;
-    transform: skewX(5deg);
-}
-
-.side-stripes span {
-    --speed: 0.4;
-    width: 14px;
-    height: 100%;
-    background: repeating-linear-gradient(
-        180deg,
-        var(--green) 0 140px,
-        transparent 140px 180px,
-        var(--blue) 180px 320px,
-        transparent 320px 360px
-    );
-    background-position: 0 calc(var(--scroll, 0) * var(--speed) * 1px);
-    filter: drop-shadow(0 0 6px rgba(95, 209, 58, 0.55));
-    opacity: 0.75;
-}
-
-.side-stripes span:nth-child(2) {
-    --speed: 0.7;
-    filter: drop-shadow(0 0 6px rgba(31, 111, 224, 0.7));
-}
-
-.side-stripes span:nth-child(3) {
-    --speed: 1;
-}
-
-/* Right side runs the other way */
-.side-right span {
-    --speed: -0.4;
-}
-
-.side-right span:nth-child(2) {
-    --speed: -0.7;
-}
-
-.side-right span:nth-child(3) {
-    --speed: -1;
-}
-
-@media (min-width: 1440px) {
-    .side-stripes {
-        display: flex;
-    }
-}
-
 /* Header Hero */
 .hero {
     background:
@@ -644,10 +577,6 @@ footer p {
     .flames::before,
     .flames::after {
         animation: none;
-    }
-
-    .side-stripes span {
-        background-position: 0 0;
     }
 }
 
