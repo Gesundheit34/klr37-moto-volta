@@ -48,8 +48,7 @@ Each RSVP entry contains:
 {
   "name": "Rider Name",
   "email": "rider@example.com",
-  "motorcycle": "klr650",
-  "motorcycleModel": "KLR650 1998 Green",
+  "motorcycle": "Kawasaki KLR250 1990",
   "attendance": "yes",
   "message": "Can't wait for this!",
   "timestamp": "2026-10-01T12:00:00.000Z"
@@ -105,7 +104,7 @@ Then open `http://localhost:8000` in your browser.
 
 ### Change Event Details
 Edit `index.html` and update:
-- Event date: `<p>November 1, 2026</p>`
+- Event date: `<p>Sunday 1 November</p>`
 - Event location: `<p>Athens Area</p>`
 - Route info: `<p>~200 km scenic route</p>`
 
@@ -113,19 +112,12 @@ Edit `index.html` and update:
 Edit `style.css` variables:
 ```css
 :root {
-    --primary: #ff6b35;      /* Orange */
-    --dark: #004e89;         /* Dark Blue */
-    --accent: #ffd60a;       /* Yellow */
+    --blue: #1f6fe0;         /* KLR tank blue */
+    --green: #5fd13a;        /* Kawasaki green */
+    --bg: #07090f;           /* Dark background */
 }
 ```
 
-### Add More Bike Types
-Edit the `<select>` in `index.html`:
-```html
-<option value="your-bike-type">Your Bike Name</option>
-```
-
-And update `getBikeEmoji()` in `script.js` if needed.
 
 ## Features & Details
 

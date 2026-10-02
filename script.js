@@ -7,7 +7,6 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
         name: document.getElementById('name').value,
         email: document.getElementById('email').value,
         motorcycle: document.getElementById('motorcycle').value,
-        motorcycleModel: document.getElementById('motorcycleModel').value,
         attendance: document.querySelector('input[name="attendance"]:checked').value,
         message: document.getElementById('message').value,
         timestamp: new Date().toISOString()
@@ -53,36 +52,20 @@ function displayRiders() {
     const confirmedRiders = riders.filter(r => r.attendance === 'yes');
 
     ridersList.innerHTML = confirmedRiders.map((rider, index) => {
-        const bikeType = getBikeEmoji(rider.motorcycle);
         const statusText = rider.attendance === 'yes' ? '✓ Coming' : '? Maybe';
+        // Older RSVPs stored the model separately from a bike-type code
         const bikeDisplay = rider.motorcycleModel || rider.motorcycle;
 
         return `
             <div class="rider-card">
                 <div class="rider-name">${escapeHtml(rider.name)}</div>
-                <div class="rider-bike">${bikeType} ${escapeHtml(bikeDisplay)}</div>
+                <div class="rider-bike">🏍️ ${escapeHtml(bikeDisplay)}</div>
                 <span class="rider-status">${statusText}</span>
             </div>
         `;
     }).join('');
 
     ridersCount.textContent = `${confirmedRiders.length} rider${confirmedRiders.length !== 1 ? 's' : ''} coming!`;
-}
-
-// Get emoji for bike type
-function getBikeEmoji(motorcycle) {
-    const emojis = {
-        'klr650': '🏍️',
-        'klr250': '🏍️',
-        'dual-sport': '🏍️',
-        'adventure': '🏍️',
-        'cruiser': '🏍️',
-        'sport': '🏍️',
-        'naked': '🏍️',
-        'classic': '🏍️',
-        'other': '🏍️'
-    };
-    return emojis[motorcycle] || '🏍️';
 }
 
 // Escape HTML
