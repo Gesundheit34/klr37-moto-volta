@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KLR 36 - Moto-Volta Athens 2026</title>
+    <title>KLR becomes 36 - Moto-Volta Athens 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Roboto+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,6 +19,7 @@
             <p class="tagline">Moto-Volta Athens 2026</p>
             <img class="hero-photo" src="images/hero.jpg" alt="Blue and white Kawasaki KLR parked on a sunny street in Athens">
         </div>
+        <div class="flames" aria-hidden="true"></div>
     </header>
 
     <main>
@@ -26,8 +30,8 @@
                     <div class="detail-card">
                         <div class="detail-icon">📅</div>
                         <h3>When</h3>
-                        <p>November 1, 2026</p>
-                        <p class="small">08:00 AM - 06:00 PM</p>
+                        <p>Sunday 1 November</p>
+                        <p class="small">2026 · 08:00 – 18:00</p>
                     </div>
                     <div class="detail-card">
                         <div class="detail-icon">📍</div>
@@ -47,10 +51,15 @@
 
         <section class="about">
             <div class="container">
-                <h2>About This Adventure</h2>
-                <img class="about-photo" src="images/sunset.jpg" alt="Blue and white Kawasaki KLR parked under a pine tree by the sea at sunset" loading="lazy">
-                <p>The Kawasaki KLR650 has been an icon of adventure riding since 1987. After 36 years of proven reliability and countless journeys, we're gathering the moto community around Athens to celebrate this legendary bike.</p>
-                <p>Join us for the <strong>Moto-Volta</strong> – a scenic loop through the Athens region where KLR owners and adventure riders unite to share the road, stories, and the spirit of exploration.</p>
+                <h2>About this Ride</h2>
+                <div class="about-grid">
+                    <img class="about-photo" src="images/sunset.jpg" alt="Blue and white Kawasaki KLR parked under a pine tree by the sea at sunset" loading="lazy">
+                    <div class="about-text" lang="el">
+                        <p>Το κουλούρι γεννήθηκε (άδεια κυκλοφορίας) τον Νοέμβριο του 1990, συνεπώς αυτόν τον Νοέμβριο κλείνει τα 36. Το κουλούρι <strong>ΔΕΝ ΣΠΑΕΙ</strong>, αλλά χαλάει (αρκετά συχνά).</p>
+                        <p>Πάμε να γιορτάσουμε τα γενέθλιά του με μια βόλτα στην Αθήνα! Προσκαλώ λοιπόν τους μηχανόβιους φίλους μου να κάνουμε ένα τουρ εντός της πόλης με τα δίκυκλα και να επισκεφτούμε κάνα ωραίο σποτάκι.</p>
+                        <p>Συμπλήρωσε τη φόρμα παρακάτω για να ξέρουμε αν θα σε περιμένουμε στην εκκίνηση.</p>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -84,27 +93,12 @@
 
                     <div class="form-group">
                         <label for="motorcycle">Motorcycle Type *</label>
-                        <select id="motorcycle" name="motorcycle" required>
-                            <option value="">-- Select your bike --</option>
-                            <option value="klr650">Kawasaki KLR650</option>
-                            <option value="klr250">Kawasaki KLR250</option>
-                            <option value="dual-sport">Dual Sport</option>
-                            <option value="adventure">Adventure Bike</option>
-                            <option value="cruiser">Cruiser</option>
-                            <option value="sport">Sport Bike</option>
-                            <option value="naked">Naked Bike</option>
-                            <option value="classic">Classic/Retro</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="motorcycleModel">Bike Model / Year</label>
                         <input
                             type="text"
-                            id="motorcycleModel"
-                            name="motorcycleModel"
-                            placeholder="e.g., KLR650 1998 Green"
+                            id="motorcycle"
+                            name="motorcycle"
+                            required
+                            placeholder="e.g., Kawasaki KLR250 1990"
                         >
                     </div>
 
@@ -133,7 +127,7 @@
                         ></textarea>
                     </div>
 
-                    <button type="submit" class="btn-submit">RSVP Now</button>
+                    <button type="submit" class="btn-submit">I'm in 🤘</button>
                 </form>
 
                 <div id="successMessage" class="success-message" style="display: none;">
@@ -153,6 +147,7 @@
         </section>
 
         <footer>
+            <div class="flames flames-footer" aria-hidden="true"></div>
             <p>&copy; 2026 KLR 36 - Moto-Volta Athens. Keep the rubber side down.</p>
             <p class="social">Follow the journey: #KLR36 #MotoVolta #AthensRiders</p>
         </footer>
