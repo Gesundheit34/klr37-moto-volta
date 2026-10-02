@@ -5,7 +5,6 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     // Get form data
     const formData = {
         name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
         motorcycle: document.getElementById('motorcycle').value,
         attendance: document.querySelector('input[name="attendance"]:checked').value,
         message: document.getElementById('message').value,

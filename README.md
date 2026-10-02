@@ -36,7 +36,7 @@ klr36-moto-volta/
 
 ## How It Works
 
-1. **RSVP Form**: Visitors fill in their name, email, motorcycle type, and riding status
+1. **RSVP Form**: Visitors fill in their name, motorcycle type, and riding status
 2. **Data Storage**: Responses are stored in the browser's localStorage
 3. **Live Display**: Confirmed riders are displayed in real-time on the page
 4. **No Database**: Everything runs client-side (perfect for quick deployment!)
@@ -47,7 +47,6 @@ Each RSVP entry contains:
 ```json
 {
   "name": "Rider Name",
-  "email": "rider@example.com",
   "motorcycle": "Kawasaki KLR250 1990",
   "attendance": "yes",
   "message": "Can't wait for this!",
@@ -106,8 +105,7 @@ Then open `http://localhost:8000` in your browser.
 Edit `index.html` and update:
 - Event date: `<p>Sunday 1 November</p>`
 - Starting point: the Where card links to Θέατρο Βράχων on Google Maps
-- Route stops: the `<li data-lat data-lng>` list in the Route section (`route.js` draws them on the map and fetches the road distance from OSRM)
-- Google Maps route: the `btn-maps` link
+- Google Maps route: the link on the Route card
 
 ### Modify Colors
 Edit `style.css` variables:
