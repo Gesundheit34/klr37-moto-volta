@@ -389,6 +389,19 @@ h2::after {
     transform: translateY(0);
 }
 
+.btn-submit:disabled {
+    opacity: 0.6;
+    cursor: wait;
+    transform: none;
+}
+
+.form-error {
+    margin-top: 15px;
+    color: #ff6b6b;
+    text-align: center;
+    font-weight: 700;
+}
+
 .success-message {
     background: linear-gradient(135deg, var(--green-dark) 0%, var(--blue) 100%);
     color: white;
