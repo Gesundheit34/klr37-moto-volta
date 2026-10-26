@@ -86,6 +86,7 @@
 
     canvas.addEventListener('pointerdown', e => { e.preventDefault(); tap(); });
     window.addEventListener('keydown', e => {
+        if (e.target.closest && e.target.closest('input, textarea, button')) return;   // typing a name
         if (e.code === 'Space' || e.code === 'ArrowUp') {
             e.preventDefault();
             if (!e.repeat) tap();
@@ -235,6 +236,7 @@
                 overAt = now;
                 const final = Math.floor(score);
                 if (final > best) { best = final; saveBest(); }
+                canvas.dispatchEvent(new CustomEvent('klr-gameover', { detail: { score: final } }));
                 break;
             }
         }

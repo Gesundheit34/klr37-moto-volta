@@ -753,3 +753,144 @@ footer p {
 body.game-page {
     background: transparent;
 }
+
+/* Game: name entry and scoreboard */
+.score-entry {
+    max-width: 420px;
+    margin: 0 auto 24px;
+    text-align: left;
+}
+
+.score-entry label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--green);
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.score-entry-row {
+    display: flex;
+    gap: 10px;
+}
+
+.score-entry input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px;
+    background: var(--surface-2);
+    color: var(--text);
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    font: inherit;
+    font-size: 1rem;
+}
+
+.score-entry input:focus {
+    outline: none;
+    border-color: var(--blue);
+}
+
+.btn-save-score {
+    padding: 10px 16px;
+    background: var(--green);
+    color: #06210a;
+    border: none;
+    border-radius: 4px;
+    font: inherit;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.score-status {
+    min-height: 1.6em;
+    margin-top: 6px;
+    color: var(--muted);
+}
+
+.score-status.ok {
+    color: var(--green);
+}
+
+.scoreboard {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 40px 0 0;
+}
+
+.beer-prize {
+    margin: -10px 0 20px;
+    font-size: 1.15rem;
+}
+
+.beer-prize strong {
+    color: var(--green);
+}
+
+.score-list {
+    list-style: none;
+    text-align: left;
+}
+
+.score-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--blue);
+    border-radius: 4px;
+}
+
+.score-list li.leader {
+    border-left-color: var(--green);
+    box-shadow: 0 0 18px rgba(95, 209, 58, 0.35);
+}
+
+.score-list li.me .who {
+    color: var(--green);
+}
+
+.score-list .rank {
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    flex-shrink: 0;
+    text-align: center;
+    border-radius: 50%;
+    background: var(--blue);
+    color: #fff;
+    font-weight: 900;
+}
+
+.score-list li.leader .rank {
+    background: var(--green);
+    color: #06210a;
+}
+
+.score-list .who {
+    flex: 1;
+    min-width: 0;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.score-list .beer {
+    margin-left: 6px;
+    font-size: 0.85rem;
+    color: var(--green);
+    white-space: nowrap;
+}
+
+.score-list .pts {
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+}
+
+.score-empty {
+    color: var(--muted);
+    font-style: italic;
+}

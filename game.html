@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Roboto+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20261026c">
+    <link rel="stylesheet" href="style.css?v=20261026d">
 </head>
 <body class="game-page">
     <div class="stars"></div>
@@ -16,14 +16,31 @@
         <a class="back-link" href="index.html">← Back to the ride</a>
         <h1 class="title game-title">KLR Game</h1>
         <canvas id="game" class="game-canvas" aria-label="KLR game: tap for a wheelie, double-tap to jump over the traffic cones"></canvas>
+        <div class="score-entry">
+            <label for="playerName">Your name for the scoreboard</label>
+            <div class="score-entry-row">
+                <input type="text" id="playerName" maxlength="20" placeholder="e.g., Nikos" autocomplete="nickname">
+                <button type="button" id="saveScore" class="btn-save-score" hidden>Save score</button>
+            </div>
+            <p id="scoreStatus" class="score-status" role="status"></p>
+        </div>
+
         <div class="game-help">
             <p><strong>Tap</strong> (or Space) = wheelie, double points while the front wheel is up</p>
             <p><strong>Double-tap</strong> (or Space twice) = jump over the cones</p>
             <p><strong>Wheelie through a puddle</strong> = +250 points</p>
             <p>The police are right behind you 🚓</p>
         </div>
+
+        <section class="scoreboard">
+            <h2>Scoreboard</h2>
+            <p class="beer-prize">🍺 Best score on ride day gets a <strong>free beer on RG</strong>! 🍺</p>
+            <ol id="scoreList" class="score-list"></ol>
+            <p id="scoreEmpty" class="score-empty">Loading scores…</p>
+        </section>
     </main>
 
-    <script src="game.js?v=20261026c"></script>
+    <script src="game.js?v=20261026d"></script>
+    <script src="scoreboard.js?v=20261026d"></script>
 </body>
 </html>
