@@ -1,8 +1,10 @@
 // KLR Game scoreboard: scores go to the "Scores" tab of the organiser's Google Sheet
-// through the same Apps Script web app as the RSVPs (RSVP_ENDPOINT in script.js).
+// through the Apps Script web app in apps-script/Code.gs.
 (function () {
-    const SCORE_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxiMRT_S8VUE5zfCaRkO-jJJ3eDAiuXlxyA6zmlnHL_P03GMagJERvLiFFW2ABdiCz5/exec';
+    const SCORE_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzbD7B78oXdwdIOsNEOHGW9LzH8nTgdEUrBBUY341rZIaUkmpun8_WjHCju5uMbPaMyPQ/exec';
     const NAME_KEY = 'klrPlayerName';
+    const BEST_KEY = 'klrGameBest';          // written by game.js
+    const SAVED_KEY = 'klrBestSaved';        // best score already on the scoreboard
     const REFRESH_MS = 60000;
 
     const canvas = document.getElementById('game');
@@ -70,6 +72,7 @@
             const result = await response.json();
             if (!result.ok) throw new Error(result.error);
             if (pendingScore === score) pendingScore = null;
+            if (score > readNumber(SAVED_KEY)) writeNumber(SAVED_KEY, score);
             setStatus(`✓ ${score} saved for ${name}`, true);
             render(result.scores);
         } catch (err) {
@@ -89,9 +92,27 @@
                 return;
             }
             render(result.scores);
+            submitUnsavedBest();
         } catch (err) {
             if (!list.children.length) empty.textContent = "Couldn't load the scoreboard right now.";
         }
+    }
+
+    // A best score that never reached the scoreboard (offline, or before it opened)
+    // is sent once the scoreboard is reachable and the player has a name
+    function submitUnsavedBest() {
+        const best = readNumber(BEST_KEY);
+        if (pendingScore || saving || !playerName() || best <= readNumber(SAVED_KEY)) return;
+        pendingScore = best;
+        submit();
+    }
+
+    function readNumber(key) {
+        try { return parseInt(localStorage.getItem(key), 10) || 0; } catch (e) { return 0; }
+    }
+
+    function writeNumber(key, value) {
+        try { localStorage.setItem(key, String(value)); } catch (e) { /* private mode */ }
     }
 
     function render(scores) {
