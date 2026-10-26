@@ -20,6 +20,7 @@ This is a simple, self-contained event website built with vanilla HTML, CSS, and
 - 📝 RSVP form with name and motorcycle type
 - 🏍️ Live rider list showing confirmed attendees
 - 💾 Shared RSVP list stored in a Google Sheet (via Google Apps Script)
+- 🎮 KLR Game (`game.html`): endless runner, tap for a wheelie, double-tap to jump the traffic cones
 - 📱 Mobile-friendly design
 - ⚡ Fast and lightweight (pure frontend)
 
