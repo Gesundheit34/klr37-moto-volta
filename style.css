@@ -674,3 +674,75 @@ footer p {
 .place-link:hover {
     color: var(--green);
 }
+
+/* Game button in the header */
+.btn-game {
+    display: inline-block;
+    margin-bottom: 26px;
+    padding: 10px 22px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 50%, var(--blue) 100%);
+    border-radius: 999px;
+    box-shadow: 0 0 18px rgba(95, 209, 58, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-game:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 0 28px rgba(95, 209, 58, 0.8);
+}
+
+/* Game page */
+.game-wrap {
+    padding-top: 24px;
+    padding-bottom: 40px;
+    text-align: center;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 10px;
+    color: var(--green);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.game-title {
+    font-size: 3.4rem;
+}
+
+.game-canvas {
+    display: block;
+    width: 100%;
+    max-width: 900px;
+    aspect-ratio: 900 / 260;
+    min-height: 220px;
+    margin: 20px auto;
+    border: 4px solid var(--green);
+    border-radius: 6px;
+    box-shadow: 0 0 26px rgba(95, 209, 58, 0.35);
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+}
+
+.game-help {
+    color: var(--muted);
+    font-size: 1.05rem;
+}
+
+.game-help strong {
+    color: var(--green);
+}
+
+
+/* Let the fixed background glow show behind the whole (short) game page */
+body.game-page {
+    background: transparent;
+}
