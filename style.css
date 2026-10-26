@@ -732,6 +732,13 @@ footer p {
     cursor: pointer;
 }
 
+@media (max-width: 600px) {
+    .game-canvas {
+        aspect-ratio: 560 / 260;
+        min-height: 0;
+    }
+}
+
 .game-help {
     color: var(--muted);
     font-size: 1.05rem;

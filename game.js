@@ -1,5 +1,6 @@
 // KLR Game: endless runner. One tap = wheelie (double points), a second tap
-// within DOUBLE_TAP_MS = jump over the traffic cones.
+// within DOUBLE_TAP_MS = jump over the traffic cones. A wheelie through a
+// puddle scores PUDDLE_POINTS. A police car chases from behind.
 (function () {
     const canvas = document.getElementById('game');
     const ctx = canvas.getContext('2d');
@@ -8,7 +9,10 @@
     const GROUND = 215;         // y of the road surface
     const WHEEL_R = 17;
     const WHEELBASE = 62;
-    const BIKE_X = 70;          // rear axle x
+    const BIKE_X = 150;         // rear axle x
+    const MIN_W = 560;          // narrower screens zoom out so cones show up early enough
+    const COP_LEN = 100;
+    const PUDDLE_POINTS = 250;
     const GRAVITY = 1900;
     const JUMP_V = 640;
     const DOUBLE_TAP_MS = 350;
@@ -22,9 +26,10 @@
         dark: '#151b26', text: '#e9eef6', cone: '#ff7a1a'
     };
 
-    let W = 600, scale = 1;
+    let W = 600, scale = 1, offsetY = 0;
     let state = 'ready';        // ready | running | over
     let speed, distance, score, best, cones, nextCone, lastTap, wheelieStart, y, vy, wheelSpin, overAt;
+    let puddles, nextPuddle, drops, popups;
 
     best = readBest();
     reset();
@@ -40,6 +45,10 @@
         y = 0;                  // height above the road
         vy = 0;
         wheelSpin = 0;
+        puddles = [];
+        nextPuddle = 900;
+        drops = [];
+        popups = [];
     }
 
     function readBest() {
@@ -89,8 +98,9 @@
         const dpr = window.devicePixelRatio || 1;
         canvas.width = Math.round(rect.width * dpr);
         canvas.height = Math.round(rect.height * dpr);
-        scale = canvas.height / H;
+        scale = Math.min(canvas.height / H, canvas.width / MIN_W);
         W = canvas.width / scale;
+        offsetY = canvas.height / scale - H;   // extra sky above the scene
     }
     window.addEventListener('resize', resize);
     resize();
@@ -105,6 +115,26 @@
         requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
+
+    function splash(amount) {
+        for (let i = 0; i < amount; i++) {
+            drops.push({
+                x: BIKE_X - 6 + Math.random() * 12,
+                y: GROUND - 2,
+                vx: -60 - Math.random() * 160,
+                vy: -140 - Math.random() * 260,
+                life: 0.5 + Math.random() * 0.3
+            });
+        }
+    }
+
+    // The police car keeps a wobbly distance, then pulls up after a crash
+    function copFrontX(now) {
+        const chasing = BIKE_X - WHEEL_R - 22 + Math.sin(now / 420) * 7;
+        if (state !== 'over') return chasing;
+        const t = Math.min(1, (now - overAt) / 700);
+        return chasing + (BIKE_X - WHEEL_R - 4 - chasing) * (1 - (1 - t) * (1 - t));
+    }
 
     function wheelieAngle(now) {
         const t = now - wheelieStart;
@@ -129,11 +159,63 @@
             if (y === 0) vy = 0;
         }
 
-        cones.forEach(c => { c.x -= dx; });
+        const copFront = copFrontX(now);
+        cones.forEach(c => {
+            c.x -= dx;
+            if (!c.knocked && c.x < copFront) {
+                c.knocked = true;          // the police car sends it flying
+                c.h = 0;
+                c.kvy = 420 + Math.random() * 200;
+                c.kvx = 160 + Math.random() * 120;
+                c.rot = 0;
+            }
+            if (c.knocked) {
+                c.x += c.kvx * dt;
+                c.kvy -= GRAVITY * dt;
+                c.h = Math.max(0, c.h + c.kvy * dt);
+                c.rot += 9 * dt;
+            }
+        });
         cones = cones.filter(c => c.x > -60);
 
+        puddles.forEach(p => { p.x -= dx; });
+        puddles = puddles.filter(p => p.x + p.w > -20);
+
+        nextPuddle -= dx;
+        if (nextPuddle <= 0) {
+            if (cones.some(c => c.x > W - speed * 0.5)) {
+                nextPuddle = 80;           // room to land before the puddle
+            } else {
+                puddles.push({ x: W + 20, w: 60 + Math.random() * 40, scored: false });
+                nextPuddle = 500 + Math.random() * 900;
+            }
+        }
+
+        // Rear wheel in a puddle: splash; with the front wheel up, score it
+        for (const p of puddles) {
+            if (y === 0 && BIKE_X > p.x && BIKE_X < p.x + p.w) {
+                splash(wheelie ? 3 : 1);
+                if (wheelie && !p.scored) {
+                    p.scored = true;
+                    score += PUDDLE_POINTS;
+                    popups.push({ x: BIKE_X + 20, y: GROUND - 90, text: `+${PUDDLE_POINTS} SPLASH!`, t0: now });
+                }
+            }
+        }
+
+        drops.forEach(d => {
+            d.x += d.vx * dt - dx * 0.6;
+            d.vy += GRAVITY * 0.6 * dt;
+            d.y += d.vy * dt;
+            d.life -= dt;
+        });
+        drops = drops.filter(d => d.life > 0 && d.y < GROUND + 10);
+        popups = popups.filter(pp => now - pp.t0 < 900);
+
         nextCone -= dx;
-        if (nextCone <= 0) {
+        if (nextCone <= 0 && puddles.some(p => p.x + p.w > W + 20 - speed * 0.9)) {
+            nextCone = 60;                 // time to finish the puddle wheelie before jumping
+        } else if (nextCone <= 0) {
             const pair = speed > 420 && Math.random() < 0.3;
             cones.push({ x: W + 20 });
             if (pair) cones.push({ x: W + 20 + 30 });
@@ -146,6 +228,7 @@
         const bikeLeft = BIKE_X - WHEEL_R + 6;
         const bikeRight = BIKE_X + WHEELBASE + WHEEL_R - 6;
         for (const c of cones) {
+            if (c.knocked) continue;
             const hitX = c.x + 22 > bikeLeft && c.x + 4 < bikeRight;
             if (hitX && y < 30) {
                 state = 'over';
@@ -159,13 +242,13 @@
 
     // ---- drawing --------------------------------------------------------
     function draw(now) {
-        ctx.setTransform(scale, 0, 0, scale, 0, 0);
+        ctx.setTransform(scale, 0, 0, scale, 0, offsetY * scale);
 
-        const sky = ctx.createLinearGradient(0, 0, 0, GROUND);
+        const sky = ctx.createLinearGradient(0, -offsetY, 0, GROUND);
         sky.addColorStop(0, '#050b18');
         sky.addColorStop(1, '#0d2a5c');
         ctx.fillStyle = sky;
-        ctx.fillRect(0, 0, W, H);
+        ctx.fillRect(0, -offsetY, W, H + offsetY);
 
         drawHills(distance * 0.1, 150, 40, '#0f2550', 0.011);
         drawHills(distance * 0.3, 180, 28, '#123a2a', 0.02);
@@ -179,10 +262,27 @@
         const dash = 60;
         for (let x = -(distance % dash); x < W; x += dash) ctx.fillRect(x, GROUND + 24, 30, 4);
 
-        cones.forEach(c => drawCone(c.x));
+        puddles.forEach(drawPuddle);
+        cones.forEach(drawCone);
+        drawCop(copFrontX(now) - COP_LEN, now);
 
         const angle = y > 0 ? Math.max(-0.25, Math.min(0.3, vy / 1600)) : wheelieAngle(now);
         drawBike(BIKE_X, GROUND - WHEEL_R - y, angle, state === 'over');
+
+        ctx.fillStyle = 'rgba(150, 200, 255, 0.85)';
+        drops.forEach(d => {
+            ctx.beginPath();
+            ctx.arc(d.x, d.y, 2.2, 0, Math.PI * 2);
+            ctx.fill();
+        });
+
+        ctx.textAlign = 'center';
+        ctx.font = '400 22px "Metal Mania", Impact, fantasy';
+        popups.forEach(pp => {
+            const t = (now - pp.t0) / 900;
+            ctx.fillStyle = `rgba(121, 184, 255, ${1 - t})`;
+            ctx.fillText(pp.text, pp.x, pp.y - t * 30);
+        });
 
         // score
         ctx.fillStyle = C.text;
@@ -195,8 +295,8 @@
             ctx.fillText('WHEELIE x2', 14, 26);
         }
 
-        if (state === 'ready') banner('KLR GAME', 'Tap to start · tap = wheelie · double-tap = jump');
-        if (state === 'over') banner('CRASH!', 'Οι κώνοι δεν περνιούνται με σούζα 😅 · tap to ride again');
+        if (state === 'ready') banner('KLR GAME', 'Tap to start · tap = wheelie · double-tap = jump · wheelie through puddles = +250');
+        if (state === 'over') banner('BUSTED!', 'Οι κώνοι δεν περνιούνται με σούζα 😅 · tap to ride again');
     }
 
     function banner(title, sub) {
@@ -224,7 +324,38 @@
         ctx.fill();
     }
 
-    function drawCone(x) {
+    function drawCone(cone) {
+        if (cone.knocked) {
+            ctx.save();
+            ctx.translate(cone.x + 13, GROUND - 17 - cone.h);
+            ctx.rotate(cone.rot);
+            ctx.translate(-13, -GROUND + 17);
+            drawConeShape(0);
+            ctx.restore();
+        } else {
+            drawConeShape(cone.x);
+        }
+    }
+
+    function drawPuddle(p) {
+        const cx = p.x + p.w / 2;
+        const water = ctx.createLinearGradient(p.x, 0, p.x + p.w, 0);
+        water.addColorStop(0, '#16325e');
+        water.addColorStop(0.5, '#2c64b8');
+        water.addColorStop(1, '#16325e');
+        ctx.fillStyle = water;
+        ctx.beginPath();
+        ctx.ellipse(cx, GROUND + 7, p.w / 2, 6, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(190, 225, 255, 0.6)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(cx - p.w * 0.25, GROUND + 5);
+        ctx.lineTo(cx + p.w * 0.1, GROUND + 5);
+        ctx.stroke();
+    }
+
+    function drawConeShape(x) {
         const top = GROUND - 34;
         ctx.fillStyle = C.cone;
         ctx.beginPath();
@@ -245,24 +376,59 @@
         ctx.fillRect(x, GROUND - 5, 26, 5);
     }
 
-    function drawWheel(cx, cy) {
+    function drawWheel(cx, cy, r = WHEEL_R) {
         ctx.fillStyle = '#0c0f14';
         ctx.beginPath();
-        ctx.arc(cx, cy, WHEEL_R, 0, Math.PI * 2);
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
         ctx.fill();
         ctx.strokeStyle = '#c9ced6';
         ctx.lineWidth = 1.5;
         ctx.beginPath();
-        ctx.arc(cx, cy, WHEEL_R - 5, 0, Math.PI * 2);
+        ctx.arc(cx, cy, r - 5, 0, Math.PI * 2);
         ctx.stroke();
         ctx.lineWidth = 1;
+        const spin = wheelSpin * WHEEL_R / r;
         for (let i = 0; i < 6; i++) {
-            const a = wheelSpin + i * Math.PI / 3;
+            const a = spin + i * Math.PI / 3;
             ctx.beginPath();
             ctx.moveTo(cx, cy);
-            ctx.lineTo(cx + Math.cos(a) * (WHEEL_R - 5), cy + Math.sin(a) * (WHEEL_R - 5));
+            ctx.lineTo(cx + Math.cos(a) * (r - 5), cy + Math.sin(a) * (r - 5));
             ctx.stroke();
         }
+    }
+
+    // Greek police patrol car, x = rear bumper, facing right
+    function drawCop(x, now) {
+        const g = GROUND;
+        poly(C.white, [[x, g - 12], [x + 2, g - 30], [x + 24, g - 32], [x + 34, g - 48],
+            [x + 70, g - 48], [x + 84, g - 32], [x + 99, g - 28], [x + 100, g - 12]]);
+        poly('#1a2b4a', [[x + 30, g - 33], [x + 37, g - 45], [x + 52, g - 45], [x + 52, g - 33]]);
+        poly('#1a2b4a', [[x + 56, g - 33], [x + 56, g - 45], [x + 68, g - 45], [x + 79, g - 33]]);
+        ctx.fillStyle = C.blue;
+        ctx.fillRect(x + 2, g - 26, 97, 6);
+        ctx.fillStyle = C.white;
+        ctx.font = '700 6px "Roboto Condensed", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('ΑΣΤΥΝΟΜΙΑ', x + 55, g - 21);
+        ctx.fillStyle = '#ffe9a0';
+        ctx.fillRect(x + 96, g - 27, 4, 4);                          // headlight
+        ctx.fillStyle = '#d23';
+        ctx.fillRect(x, g - 27, 3, 4);                               // tail light
+
+        // light bar: blue and red take turns
+        const blueOn = Math.floor(now / 180) % 2 === 0;
+        ctx.save();
+        ctx.shadowBlur = 14;
+        ctx.shadowColor = blueOn ? '#3d8bff' : '#ff3b3b';
+        ctx.fillStyle = blueOn ? '#3d8bff' : '#33415c';
+        ctx.fillRect(x + 42, g - 53, 9, 5);
+        ctx.shadowColor = blueOn ? '#3d8bff' : '#ff3b3b';
+        ctx.fillStyle = blueOn ? '#4a2430' : '#ff3b3b';
+        ctx.fillRect(x + 52, g - 53, 9, 5);
+        ctx.restore();
+
+        drawWheel(x + 20, g - 11, 11);
+        drawWheel(x + 80, g - 11, 11);
     }
 
     function poly(color, points) {
@@ -318,6 +484,11 @@
         ctx.fillRect(34, -76, 8, 4);                                 // visor
 
         ctx.restore();
+    }
+
+    // Test hook for automated play-testing: open game.html#debug
+    if (location.hash === '#debug') {
+        window.klrDebug = () => ({ state, score, speed, y, cones: cones.filter(c => !c.knocked).map(c => c.x), puddles: puddles.map(p => [p.x, p.w, p.scored]) });
     }
 
     // Pause cleanly when the tab is hidden
