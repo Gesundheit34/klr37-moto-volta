@@ -19,7 +19,7 @@ This is a simple, self-contained event website built with vanilla HTML, CSS, and
 - 🎨 Beautiful, responsive event landing page
 - 📝 RSVP form with name and motorcycle type
 - 🏍️ Live rider list showing confirmed attendees
-- 💾 Browser-based data storage (localStorage)
+- 💾 Shared RSVP list stored in a Google Sheet (via Google Apps Script)
 - 📱 Mobile-friendly design
 - ⚡ Fast and lightweight (pure frontend)
 
@@ -37,9 +37,9 @@ klr36-moto-volta/
 ## How It Works
 
 1. **RSVP Form**: Visitors fill in their name, motorcycle type, and riding status
-2. **Data Storage**: Responses are stored in the browser's localStorage
+2. **Data Storage**: Responses are saved to the organiser's Google Sheet through the Apps Script web app in `apps-script/Code.gs` (setup steps are at the top of that file). Until `RSVP_ENDPOINT` in `script.js` is set, they only stay in the visitor's browser
 3. **Live Display**: Confirmed riders are displayed in real-time on the page
-4. **No Database**: Everything runs client-side (perfect for quick deployment!)
+4. **No Server to Run**: Google hosts the storage; the site itself stays static
 
 ### Data Structure
 
@@ -139,16 +139,7 @@ Edit `style.css` variables:
 
 ## Data Export
 
-To export RSVP data:
-
-1. Open browser DevTools (F12)
-2. Go to Console
-3. Run:
-```javascript
-console.log(JSON.stringify(JSON.parse(localStorage.getItem('klr36Riders')), null, 2));
-```
-4. Copy the output and save to a JSON file
-5. Import into Excel/Google Sheets if needed
+All RSVPs, including the private messages, are in the organiser's Google Sheet (tab "RSVPs"). Use File → Download in Google Sheets to export them.
 
 ## Browser Support
 
@@ -161,19 +152,17 @@ console.log(JSON.stringify(JSON.parse(localStorage.getItem('klr36Riders')), null
 ## Important Notes
 
 ### Data Persistence
-- Data is stored in browser's localStorage
-- Data is **not** synced between browsers/devices
-- Clearing browser cache will delete responses
-- For production use, consider adding a backend database
+- RSVPs are stored in the organiser's Google Sheet and shared by every visitor
+- The rider list refreshes every 30 seconds
+- To remove an RSVP, delete its row in the sheet
 
 ### Privacy
-- No data is sent to external servers by default
-- Email addresses are stored locally only
+- RSVPs (name, motorcycle, attendance, message) are sent to the organiser's Google Sheet
+- The website only shows names and motorcycles; messages stay in the sheet
 - For data analytics, you may want to add Google Analytics
 
 ## Future Enhancements
 
-- [ ] Add backend API for secure data storage
 - [ ] Email notifications when riders RSVP
 - [ ] Map integration showing route
 - [ ] Photo gallery for event day
