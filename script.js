@@ -1,7 +1,7 @@
 // Shared RSVP storage: the Google Apps Script web app in apps-script/Code.gs keeps
 // RSVPs in the organiser's Google Sheet. Paste its /exec URL here. While it is empty,
 // RSVPs are only kept in this browser.
-const RSVP_ENDPOINT = '';
+const RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxiMRT_S8VUE5zfCaRkO-jJJ3eDAiuXlxyA6zmlnHL_P03GMagJERvLiFFW2ABdiCz5/exec';
 
 const LOCAL_KEY = 'klr36Riders';
 const REFRESH_MS = 30000;
