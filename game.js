@@ -247,13 +247,13 @@
         ctx.setTransform(scale, 0, 0, scale, 0, offsetY * scale);
 
         const sky = ctx.createLinearGradient(0, -offsetY, 0, GROUND);
-        sky.addColorStop(0, '#050b18');
-        sky.addColorStop(1, '#0d2a5c');
+        sky.addColorStop(0, '#2a2e34');
+        sky.addColorStop(1, '#5c626a');
         ctx.fillStyle = sky;
         ctx.fillRect(0, -offsetY, W, H + offsetY);
 
-        drawHills(distance * 0.1, 150, 40, '#0f2550', 0.011);
-        drawHills(distance * 0.3, 180, 28, '#123a2a', 0.02);
+        drawSkyline(distance * 0.15);
+        drawCity(distance * 0.35);
 
         // road
         ctx.fillStyle = '#20252f';
@@ -313,17 +313,157 @@
         ctx.fillText(sub, W / 2, 132, W - 20);
     }
 
-    function drawHills(offset, base, amp, color, freq) {
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.moveTo(0, GROUND);
-        for (let x = 0; x <= W + 10; x += 10) {
-            const t = (x + offset) * freq;
-            ctx.lineTo(x, base - amp * (0.6 * Math.sin(t) + 0.4 * Math.sin(t * 2.3 + 1)));
+    // ---- Athens backdrop: gray silhouettes, tiled every SKYLINE_LEN -------
+    const SKY_SCALE = 1.35;
+    const SKYLINE_LEN = 1900 * SKY_SCALE;
+    const SKY_BASE = 200;
+    const FAR = '#868c94';         // lit marble against the dark gray sky
+    const FAR_DETAIL = '#b4b9bf';
+
+    function drawSkyline(offset) {
+        const start = -(offset % SKYLINE_LEN);
+        for (let x0 = start; x0 < W; x0 += SKYLINE_LEN) {
+            landmark(x0, 20, 300, drawAcropolis);
+            landmark(x0, 380, 140, drawLycabettus);
+            landmark(x0, 600, 260, drawKallimarmaro);
+            landmark(x0, 940, 160, drawOlympieion);
+            landmark(x0, 1180, 700, drawPiraeus);
         }
-        ctx.lineTo(W, GROUND);
-        ctx.closePath();
-        ctx.fill();
+    }
+
+    // Landmarks are drawn at 1x and scaled up around their base
+    function landmark(x0, at, width, draw) {
+        const x = x0 + at * SKY_SCALE;
+        if (x + width * SKY_SCALE < 0 || x > W) return;
+        ctx.save();
+        ctx.translate(x, SKY_BASE);
+        ctx.scale(SKY_SCALE, SKY_SCALE);
+        ctx.translate(-x, -SKY_BASE);
+        draw(x);
+        ctx.restore();
+    }
+
+    function drawAcropolis(x) {
+        const b = SKY_BASE;
+        // the rock, flat on top
+        poly(FAR, [[x, b], [x + 30, b - 30], [x + 55, b - 44], [x + 230, b - 47], [x + 255, b - 32], [x + 285, b]]);
+        // Parthenon: steps, columns, pediment
+        const px = x + 95, top = b - 47;
+        ctx.fillStyle = FAR_DETAIL;
+        ctx.fillRect(px - 4, top - 4, 108, 4);
+        for (let i = 0; i < 9; i++) ctx.fillRect(px + i * 12.5, top - 26, 5, 22);
+        ctx.fillRect(px - 4, top - 30, 108, 4);
+        poly(FAR_DETAIL, [[px - 4, top - 30], [px + 50, top - 40], [px + 104, top - 30]]);
+        // Erechtheion
+        ctx.fillRect(x + 215, top - 14, 22, 14);
+        ctx.fillRect(x + 213, top - 17, 26, 3);
+    }
+
+    function drawLycabettus(x) {
+        const b = SKY_BASE;
+        poly(FAR, [[x, b], [x + 45, b - 55], [x + 64, b - 92], [x + 76, b - 92], [x + 95, b - 58], [x + 140, b]]);
+        // chapel of Agios Georgios on the summit
+        ctx.fillStyle = FAR_DETAIL;
+        ctx.fillRect(x + 62, b - 103, 16, 11);
+        poly(FAR_DETAIL, [[x + 60, b - 103], [x + 70, b - 109], [x + 80, b - 103]]);
+        ctx.fillRect(x + 66, b - 116, 5, 10);
+        ctx.fillRect(x + 67.5, b - 121, 2, 5);                        // cross
+        ctx.fillRect(x + 65.5, b - 119, 6, 1.5);
+    }
+
+    function drawKallimarmaro(x) {
+        const b = SKY_BASE;
+        // marble tiers of the Panathenaic Stadium seen from the entrance
+        poly(FAR, [[x, b], [x + 14, b - 34], [x + 246, b - 34], [x + 260, b]]);
+        ctx.fillStyle = FAR_DETAIL;
+        for (let i = 1; i <= 5; i++) ctx.fillRect(x + 14 - i * 0.5 + 2, b - 34 + i * 5.5, 228 + i, 1.2);
+        // the arena opening and the entrance propylaea
+        poly('#a3a8af', [[x + 70, b], [x + 82, b - 14], [x + 178, b - 14], [x + 190, b]]);
+        ctx.fillStyle = FAR;
+        for (let i = 0; i < 6; i++) ctx.fillRect(x + 96 + i * 14, b - 22, 4, 22);
+        ctx.fillRect(x + 92, b - 25, 78, 3);
+    }
+
+    function drawOlympieion(x) {
+        const b = SKY_BASE;
+        ctx.fillStyle = FAR;
+        ctx.fillRect(x, b - 6, 160, 6);
+        // the standing Corinthian columns, in two groups
+        [0, 1, 2, 3, 4, 5, 6, 7].forEach(i => ctx.fillRect(x + 10 + i * 9, b - 66, 5, 60));
+        ctx.fillRect(x + 8, b - 70, 70, 4);
+        [0, 1].forEach(i => ctx.fillRect(x + 120 + i * 11, b - 66, 5, 60));
+        ctx.fillRect(x + 118, b - 70, 20, 4);
+    }
+
+    function drawPiraeus(x) {
+        const b = SKY_BASE;
+        // the harbour water
+        ctx.fillStyle = '#6b7179';
+        ctx.fillRect(x, b - 4, 700, 4);
+        // cruise ship
+        poly(FAR, [[x + 20, b - 4], [x + 10, b - 22], [x + 230, b - 22], [x + 215, b - 4]]);
+        ctx.fillStyle = FAR_DETAIL;
+        ctx.fillRect(x + 40, b - 34, 160, 12);
+        ctx.fillRect(x + 60, b - 44, 120, 10);
+        ctx.fillRect(x + 90, b - 52, 60, 8);
+        ctx.fillStyle = FAR;
+        for (let i = 0; i < 14; i++) ctx.fillRect(x + 46 + i * 11, b - 30, 6, 3);   // windows
+        ctx.fillRect(x + 150, b - 64, 14, 12);                                      // funnel
+        // ferry with open stern ramp
+        poly(FAR, [[x + 290, b - 4], [x + 280, b - 18], [x + 420, b - 18], [x + 410, b - 4]]);
+        ctx.fillStyle = FAR_DETAIL;
+        ctx.fillRect(x + 300, b - 28, 95, 10);
+        ctx.fillRect(x + 330, b - 36, 50, 8);
+        ctx.fillStyle = FAR;
+        ctx.fillRect(x + 360, b - 46, 10, 10);
+        // small fishing boat
+        poly(FAR, [[x + 455, b - 4], [x + 448, b - 11], [x + 492, b - 11], [x + 486, b - 4]]);
+        ctx.fillRect(x + 468, b - 30, 2, 19);
+        // container cranes
+        [540, 620].forEach(cx => {
+            ctx.fillStyle = FAR;
+            ctx.fillRect(x + cx, b - 70, 5, 70);
+            ctx.fillRect(x + cx + 30, b - 70, 5, 70);
+            ctx.fillRect(x + cx - 30, b - 74, 100, 5);
+            ctx.fillRect(x + cx + 12, b - 86, 3, 12);
+        });
+    }
+
+    // Near layer: Athens apartment blocks (polykatoikies) and cypress trees
+    const CITY_LEN = 1300;
+    const city = [];
+    (function buildCity() {
+        let seed = 7;
+        const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+        for (let x = 0; x < CITY_LEN;) {
+            if (rnd() < 0.18) {
+                city.push({ tree: true, x, h: 16 + rnd() * 12 });
+                x += 14;
+            } else {
+                const w = 34 + rnd() * 40;
+                city.push({ x, w, h: 10 + rnd() * 22, antenna: rnd() < 0.4 });
+                x += w + 2 + rnd() * 10;
+            }
+        }
+    })();
+
+    function drawCity(offset) {
+        const start = -(offset % CITY_LEN);
+        for (let x0 = start; x0 < W; x0 += CITY_LEN) {
+            city.forEach(c => {
+                const x = x0 + c.x;
+                if (x > W || x + (c.w || 14) < 0) return;
+                if (c.tree) {
+                    poly('#23272c', [[x, GROUND], [x + 5, GROUND - c.h], [x + 10, GROUND]]);
+                    return;
+                }
+                ctx.fillStyle = '#353a41';
+                ctx.fillRect(x, GROUND - c.h, c.w, c.h);
+                ctx.fillStyle = '#2a2e34';
+                for (let fy = GROUND - c.h + 8; fy < GROUND - 4; fy += 9) ctx.fillRect(x - 2, fy, c.w + 4, 2);  // balconies
+                if (c.antenna) ctx.fillRect(x + c.w * 0.6, GROUND - c.h - 9, 1.5, 9);
+            });
+        }
     }
 
     function drawCone(cone) {
