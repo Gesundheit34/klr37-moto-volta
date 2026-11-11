@@ -6,9 +6,9 @@
 
 **KLR 36** is a special celebration of the legendary Kawasaki KLR650, which has been a pillar of adventure riding since 1987. We're organizing a scenic **Moto-Volta** (circular motorcycle ride) around Athens in November 2026, bringing together KLR owners and adventure riders from across Greece.
 
-- **Date**: November 1, 2026
+- **Date**: Saturday, November 14, 2026
 - **Route**: ~200 km scenic loop around Athens
-- **Duration**: 08:00 AM - 06:00 PM
+- **Start**: 13:00
 - **Location**: Athens, Greece
 
 ## Website Features
@@ -104,7 +104,7 @@ Then open `http://localhost:8000` in your browser.
 
 ### Change Event Details
 Edit `index.html` and update:
-- Event date: `<p>Sunday 1 November</p>`
+- Event date: `<p>Saturday 14 November</p>`
 - Starting point: the Where card links to Θέατρο Βράχων on Google Maps
 - Google Maps route: the link on the Route card
 
