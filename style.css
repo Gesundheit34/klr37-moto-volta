@@ -894,3 +894,37 @@ body.game-page {
     color: var(--muted);
     font-style: italic;
 }
+
+/* Postponed notice at the very top of the page */
+.postponed-banner {
+    position: relative;
+    z-index: 5;
+    padding: 22px 16px 18px;
+    text-align: center;
+    background: repeating-linear-gradient(-45deg, #b3121c 0 22px, #8f0e16 22px 44px);
+    border-bottom: 4px solid #ffd60a;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+}
+
+.postponed-title {
+    font-family: var(--font-rock);
+    font-size: clamp(3rem, 12vw, 7rem);
+    line-height: 1;
+    letter-spacing: 6px;
+    color: #fff;
+    text-shadow: 3px 3px 0 #000, 0 0 24px rgba(255, 214, 10, 0.6);
+}
+
+.postponed-sub {
+    margin-top: 8px;
+    font-size: 1.2rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: #ffd60a;
+}
+
+.postponed-note {
+    color: #ff6b6b;
+    font-weight: 700;
+}
+
